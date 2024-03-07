@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     due_date: DataTypes.DATE,
     priority: DataTypes.INTEGER,
-    completed: DataTypes.BOOLEAN
+    status: DataTypes.ENUM("todo","inprogress","completed","closed")
   }, {
     sequelize,
     modelName: 'Task',
