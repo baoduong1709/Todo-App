@@ -49,10 +49,10 @@ class ViewListTaskController {
             //     },
             // })
             function filterTasksUncompleted(tasks) { 
-                return tasks.filter(task => task.dataValues.completed ==  false); 
+                return tasks.filter(task => task.dataValues.status == 'todo'  ); 
             }
             function filterTasksCompleted(tasks) { 
-                return tasks.filter(task => task.dataValues.completed ==  true); 
+                return tasks.filter(task => task.dataValues.status == 'completed'); 
             }
             function filterTasksBeforeToday(tasks) {
                 const today = new Date();
