@@ -7,6 +7,7 @@ var connectToDB = require("./config/db_connection");
 var indexRouter = require("./routes/index");
 var bodyParser = require("body-parser");
 var usersRouter = require("./routes/user");
+var tasksRouter = require("./routes/task")
 
 var app = express();
 process.env.TZ = "UTC";
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, "public")));
 connectToDB();
 app.use("/", indexRouter);
 app.use("/user", usersRouter);
+app.use("/task", tasksRouter)
 app.use(function (req, res, next) {
     next(createError(404));
 });

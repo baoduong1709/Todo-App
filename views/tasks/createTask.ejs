@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="modal fade" id="createModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Add task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="create_task" method="post" action="/task/create">
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="mb-3 col">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" name="title" class="form-control" id="title">
+                            </div>
+                            <div class="mb-3 col">
+                                <label for="description" class="form-label">Description</label>
+                                <input type="text" name="description" class="form-control" id="description">
+                            </div>
+                            <div class="mb-3 col">
+                                <label for="due_date" class="form-label">Time</label>
+                                <input type="datetime-local" name="due_date" id="due_date" class="form-control">
+                            </div>
+                            <div class="mb-3 col">
+                                <label for="priority1" class="form-label">Priority</label>
+                                <select id="priority1" class="form-select" aria-label="Default select example" name="priority1">
+                                    <option value="1">Low</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3">High</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const formCreate = document.getElementById("create_task");
+        formCreate.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const formData = new FormData(formCreate);
+            const title = formData.get("title");
+            const description = formData.get("description");
+            const due_date = formData.get("due_date");
+            const priority1 = formData.get("priority1");
+            try {
+                const response = await fetch("/task/create", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        title,
+                        description,
+                        due_date,
+                        priority1,
+                    }),
+                });
+                if (!response.ok) {
+                    throw new Error("Đã xảy ra lỗi khi tạo task");
+                }
+                location.reload();
+            } catch (error) {
+                console.error("Lỗi:", error);
+            }
+        });
+    </script>
+</body>
+
+</html>
