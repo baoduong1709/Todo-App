@@ -1,13 +1,15 @@
 let jwt = require('jsonwebtoken')
 const db = require('../models/index')
+require('dotenv').config();
 class checkLoginEmployee{
     async check(req, res, next){
         let token = req.session.token
+        let key_token = process.env.KEY_TOKEN
         try{
             if (token == undefined){
                 return res.status(401).send('Chưa đăng nhập')
             }
-            let tokenVerify = jwt.verify(token,'bao1709')
+            let tokenVerify = jwt.verify(token,key_token)
             let email = tokenVerify.email
             await db.User.findOne({ where: { email:email } })
             .then((data) =>{
