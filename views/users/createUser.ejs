@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form method="post" action="/user/create" id="create_user" onsubmit="return validatePassword()">
+            <div class="container">
+                <div class="mb-3 col-6">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" autocomplete="off">
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" name="name" class="form-control" id="name" autocomplete="off">
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="birthdate" class="form-label">Date of Birth</label>
+                    <input type="date" name="birthdate" class="form-control" id="birthdate" autocomplete="off">
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select name="gender" class="form-select" id="gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" name="address" class="form-control" id="address" autocomplete="off">
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" id="password" autocomplete="off">
+                    <div id="lengthAlert" style="display: none; color: #dc3545;">
+                        Mật khẩu phải có ít nhất 6 ký tự.
+                    </div>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" name="confirmPassword" class="form-control" id="confirmPassword" autocomplete="off">
+                    <div id="dangerAlert" style=" color: #dc3545; display: none;">
+                        Mật khẩu và mật khẩu xác nhận không khớp.
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" disabled id="submitBtn">Submit</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        const formCreate = document.getElementById('create_user');
+        formCreate.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(formCreate);
+            const email = formData.get('email');
+            const name = formData.get('name');
+            const password = formData.get('password');
+            const dateOfBirth = formData.get("birthdate");
+            const gender = formData.get("gender")
+            const address = formData.get("address");
+            try {
+                const response = await fetch('/user/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        name,
+                        password,
+                        dateOfBirth,
+                        gender,
+                        address
+                    })
+                });
+
+                if (response.status === 409) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    Toast.fire({
+                        icon: "warning",
+                        title: "Email already in use"
+                    });
+                    return
+                }
+                const responseData = await response.json();
+                console.log(responseData);
+                window.location.href = `/user/confirmEmail?email=${responseData}`;
+            } catch (error) {
+                console.error('Lỗi:', error);
+            }
+        });
+
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const dangerAlert = document.getElementById('dangerAlert');
+        const lengthAlert = document.getElementById('lengthAlert');
+        const submitButton = document.getElementById("submitBtn");
+
+        function validatePassword() {
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const dangerAlert = document.getElementById('dangerAlert');
+            const lengthAlert = document.getElementById('lengthAlert');
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            if (password.length < 6) {
+                passwordInput.classList.add('is-invalid');
+                confirmPasswordInput.classList.add('is-invalid');
+                lengthAlert.style.display = 'block';
+                submitButton.disabled = true;
+                return false;
+            } else {
+                passwordInput.classList.remove('is-invalid');
+                confirmPasswordInput.classList.remove('is-invalid');
+                lengthAlert.style.display = 'none';
+            }
+            if (password !== confirmPassword) {
+                passwordInput.classList.add('is-invalid');
+                confirmPasswordInput.classList.add('is-invalid');
+                dangerAlert.style.display = 'block';
+                submitButton.disabled = true;
+                return false;
+            } else {
+                passwordInput.classList.remove('is-invalid');
+                confirmPasswordInput.classList.remove('is-invalid');
+                dangerAlert.style.display = 'none';
+                submitButton.disabled = false;
+                return true;
+            }
+        }
+        passwordInput.addEventListener('input', validatePassword);
+        confirmPasswordInput.addEventListener('input', validatePassword);
+        const birthdateInput = document.getElementById('birthdate');
+        birthdateInput.addEventListener('change', function() {
+            const birthdate = new Date(this.value);
+            const today = new Date();
+            const age = today.getFullYear() - birthdate.getFullYear();
+            if (age < 16) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: "You need to be 16 years old"
+                });
+                this.value = ''
+            }
+        });
+        formCreate.addEventListener('input', function() {
+            const inputs = Array.from(this.querySelectorAll('input, select'));
+            const isAllFilled = inputs.every(input => input.value !== '');
+            submitButton.disabled = !isAllFilled || !validatePassword();
+        });
+    </script>
+</body>
+
+</html>
