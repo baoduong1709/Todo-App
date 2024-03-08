@@ -25,7 +25,6 @@
                 <table class="table table-hover table-white table-sm">
                     <tbody>
                         <% tasksTodo.forEach(function(task) { %>
-                        <% console.log('dasasd',task); %>
                         <tr class="border border-5 border-light" style="border-width: 10px;">
                             <td class="col-9 ps-3">
                                 <div class="title">
@@ -42,7 +41,7 @@
                             </td>
                             <td>
                                 <div class="d-flex justify-content-end">
-                                    <button onclick="updateStatusTask('<%= task.id %>','<%= task.status_id %>',0)" class="icon-button">
+                                    <button onclick="updateStatusTask('<%= task.id %>','<%= task.status_id %>',-1)" class="icon-button">
                                         <i class="fa-solid fa-caret-left fa-4x"></i>
                                     </button>
                                     <button onclick="updateStatusTask('<%= task.id %>','<%= task.status_id %>',1)" class="icon-button me-2">
@@ -181,9 +180,16 @@
         }
 
         function updateStatusTask(task_id,status_id,x) {
-            console.log(task_id,status_id,x);
-            fetch("/task/update/" + task_id, {
+            fetch("/task/update/status/" + task_id, {
                     method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        status_id,
+                        task_id,
+                        x
+                    }),
                 })
                 .then((response) => {
                     if (!response.ok) {
