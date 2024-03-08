@@ -32,9 +32,9 @@
                             <div class="mb-3 col">
                                 <label for="priority1" class="form-label">Priority</label>
                                 <select id="priority1" class="form-select" aria-label="Default select example" name="priority1">
-                                    <option value="1">Low</option>
-                                    <option value="2">Medium</option>
-                                    <option value="3">High</option>
+                                    <% priorityTable.forEach(priority => { %>
+                                    <option value="<%= priority.id %>"><%= priority.name %></option>
+                                    <% }); %>
                                 </select>
                             </div>
                         </div>
