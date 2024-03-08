@@ -123,10 +123,20 @@ tbody {
     border: none; 
     padding: 0;
     cursor: pointer;
+    z-index:  999;
 }
 .icon-button:hover{
     color: #00d5ff;
 }
 .icon-button:active{
     color: aquamarine;
+}
+.button-like-tr {
+    cursor: pointer;
+}
+.button-like-tr:hover {
+    background-color: #003979; /* Màu nền khi di chuột vào */
+}
+.button-like-tr:active {
+    background-color: #b41c1c; /* Màu nền khi click */
 }

@@ -18,15 +18,16 @@
         </button>
         <%- include('../tasks/createTask.ejs'); %>
         <div class="row">
-            <div class="col bg-light">
-                <div class="title-time">
+            <div class="col bg-light mx-2" style="height: 500px;">
+                <div class="title-time mt-2">
                     <p>Todo</p>
                 </div>
                 <table class="table table-hover table-white table-sm">
                     <tbody>
                         <% tasksTodo.forEach(function(task) { %>
-                        <tr class="border border-5 border-light" style="border-width: 10px;">
-                            <td class="col-9 ps-3">
+                        <tr class="border border-5 border-light">
+                            <%- include('../tasks/updateTask.ejs') %>
+                            <td class="col-9 ps-3" onclick="updateTask('<%= JSON.stringify(task) %>')" data-bs-toggle="modal" data-bs-target="#updateModal">
                                 <div class="title">
                                     <%= task.title %>
                                     <div class="due_date">
@@ -34,11 +35,34 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="col-2 ">
-                                <div class="d-flex align-items-center">
-                                    <p class="textss">dasda</p>
+                            <td>
+                                <div class="d-flex justify-content-end">
+                                    <button onclick="updateStatusTask('<%= task.id %>','<%= task.status_id %>',1)" class="icon-button me-2">
+                                        <i class="fa-solid fa-caret-right fa-4x"></i>
+                                    </button>
                                 </div>
                             </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col bg-light mx-2">
+                <div class="title-time mt-2">
+                    <p>Inprogress</p>
+                </div>
+                <table class="table table-hover table-white table-sm">
+                    <tbody>
+                        <% tasksInprogress.forEach(function(task) { %>
+                        <tr class="border border-5 border-light" >
+                                <td class="col-9 ps-3" onclick="updateTask('<%= JSON.stringify(task) %>')" data-bs-toggle="modal" data-bs-target="#updateModal">
+                                    <div class="title">
+                                        <%= task.title %>
+                                        <div class="due_date">
+                                            <%= new Date(task.due_date).toISOString().slice(0,16).replace('T',' ') %>
+                                        </div>
+                                    </div>
+                                </td>
                             <td>
                                 <div class="d-flex justify-content-end">
                                     <button onclick="updateStatusTask('<%= task.id %>','<%= task.status_id %>',-1)" class="icon-button">
@@ -55,68 +79,15 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col">
-                <div class="title-time">
-                    <p>Inpr</p>
+            <div class="col bg-light mx-2">
+                <div class="title-time mt-2">
+                    <p>Completed</p>
                 </div>
-                <table class="table table-hover table-light table-sm">
-                    <tbody>
-                        <% tasksInprogress.forEach(function(task) { %>
-                        <tr>
-                            <td class="col-9 ps-3">
-                                <div class="title">
-                                    <%= task.title %>
-                                    <div class="due_date">
-                                        <%= new Date(task.due_date).toISOString().slice(0,16).replace('T',' ') %>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="col-2 text-center">
-                                <div class="center">
-                                    <% if (task.priority_id == 1) { %>
-                                    <p>Low</p>
-                                    <% } else if(task.priority_id == 2){ %>
-                                    <div>Medium</div>
-                                    <% } else {%> High <% } %>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-end align-items-center center2">
-
-                                    <%- include('../tasks/updateTask.ejs') %>
-                                    <div class="btn-group dropstart">
-                                        <button type="button" class="dropdown-toggle dropdown-button" data-bs-toggle="dropdown" aria-expanded="false" style="z-index: 0;"></button>
-                                        <div class="dropdown-menu">
-                                            <div class="btn-group px-2" role="group">
-                                                <div>
-                                                    <button type="button" onclick="deleteTask('<%= task.id %>')" class="btn btn-danger">
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                                <div class="ps-2">
-                                                    <button type="button" onclick="updateTask('<%= JSON.stringify(task) %>')" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal">
-                                                        Update
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <% }); %>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col">
-                <div class="title-time">
-                    <p>Done</p>
-                </div>
-                <table class="table table-hover table-light table-sm">
+                <table class="table table-hover table-white table-sm">
                     <tbody>
                         <% tasksCompleted.forEach(function(task) { %>
-                        <tr>
-                            <td class="col-9 ps-3">
+                        <tr class="border border-5 border-light">
+                            <td class="col-9 ps-3" onclick="updateTask('<%= JSON.stringify(task) %>')" data-bs-toggle="modal" data-bs-target="#updateModal">
                                 <div class="title">
                                     <%= task.title %>
                                     <div class="due_date">
@@ -124,36 +95,12 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="col-2 text-center">
-                                <div class="center">
-                                    <% if (task.priority == 1) { %>
-                                    <p>Low</p>
-                                    <% } else if(task.priority == 2){ %>
-                                    <div>Medium</div>
-                                    <% } else {%> High <% } %>
-                                </div>
-                            </td>
                             <td>
-                                <div class="d-flex justify-content-end align-items-center center2">
-
+                                <div class="d-flex justify-content-end">
+                                    <button onclick="updateStatusTask('<%= task.id %>','<%= task.status_id %>',-1)" class="icon-button">
+                                        <i class="fa-solid fa-caret-left fa-4x"></i>
+                                    </button>
                                     <%- include('../tasks/updateTask.ejs') %>
-                                    <div class="btn-group dropstart">
-                                        <button type="button" class="dropdown-toggle dropdown-button" data-bs-toggle="dropdown" aria-expanded="false" style="z-index: 0;"></button>
-                                        <div class="dropdown-menu">
-                                            <div class="btn-group px-2" role="group">
-                                                <div>
-                                                    <button type="button" onclick="deleteTask('<%= task.id %>')" class="btn btn-danger">
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                                <div class="ps-2">
-                                                    <button type="button" onclick="updateTask('<%= JSON.stringify(task) %>')" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal">
-                                                        Update
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -179,7 +126,7 @@
             }
         }
 
-        function updateStatusTask(task_id,status_id,x) {
+        function updateStatusTask(task_id, status_id, x) {
             fetch("/task/update/status/" + task_id, {
                     method: "post",
                     headers: {

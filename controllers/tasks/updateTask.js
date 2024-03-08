@@ -1,7 +1,6 @@
 const db = require('../../models/index')
 class UpdateTaskController {
     async update(req, res) {
-        console.log(req.params);
         try {
             let id = req.params.id;
             const task = await db.Task.findByPk(id);
@@ -22,7 +21,6 @@ class UpdateTaskController {
     }
     async updateTaskStatus(req, res) {
         let id = req.params.id
-        console.log(req.body);
         let status_id = req.body.status_id
         let x = req.body.x
         try {
@@ -31,8 +29,7 @@ class UpdateTaskController {
                 console.log('Không tìm thấy task');
                 return;
             }
-            task.status_id = status_id + x
-            console.log(status_id + x);
+            task.status_id = parseInt(status_id) + x
             await task.save()
             console.log('Task đã được xóa thành công');
             res.status(200).json('ok');
