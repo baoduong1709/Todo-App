@@ -11,7 +11,7 @@ class UpdateTaskController {
             task.title = req.body.title;
             task.description = req.body.description;
             task.due_date = req.body.due_date;
-            task.priority = req.body.priority1;
+            task.priority_id = req.body.priority1;
             task.completed = req.body.completed;
             await task.save();
             res.status(200).json('ok');
