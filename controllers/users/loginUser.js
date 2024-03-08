@@ -8,20 +8,17 @@ class LoginUserController {
         let key_token = process.env.KEY_TOKEN
         let email = req.body.email;
         let password = req.body.password
-        console.log(email,password);
         try {
             const acc = await db.User.findOne({ where: { email: email } });
             if (acc === null) {
-                console.log('daadasd');
                 return res.status(401);
             } else if (acc.is_active === null) { 
                 return res.status(403)
             } else {
                 let checkPassword = bcrypt.compareSync(
-                    req.body.password,
+                    password,
                     acc.password
                 );
-                console.log(checkPassword);
                 if (checkPassword === true) {
                     let token = jwt.sign({ email: acc.email }, key_token);
                     req.session.token = token;
