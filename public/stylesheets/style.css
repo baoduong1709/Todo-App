@@ -37,9 +37,6 @@ tbody {
 .center {
     margin-top: 12px;
 }
-.center2 {
-    margin-top: 8px;
-}
 .title-time {
     font-size: 18px;
     font-weight: bold;
@@ -120,4 +117,16 @@ tbody {
         top: 15px;
         right: 35px;
     }
+}
+.icon-button {
+    background-color: transparent;
+    border: none; 
+    padding: 0;
+    cursor: pointer;
+}
+.icon-button:hover{
+    color: #00d5ff;
+}
+.icon-button:active{
+    color: aquamarine;
 }
