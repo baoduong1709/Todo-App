@@ -21,13 +21,14 @@ a {
     margin-top: -5px;
 }
 .title {
-    font-size: 20px;
+    font-size: 15px;
     margin-top: 2px;
 }
 .due_date {
     margin-top: 5px;
     font-size: 10px;
 }
+
 tbody {
     background-color: rgb(20, 91, 91);
 }
@@ -46,7 +47,7 @@ tbody {
 }
 .navbar {
     width: 100%;
-    height: 50px;
+    height: 60px;
     position: fixed;
     top: 0;
     background-color: #ffffff;
@@ -63,10 +64,9 @@ tbody {
 }
 .logo {
     position: fixed;
-    left: 10%;
+    left: 5%;
     font-size: 25px;
     font-weight: bold;
-    font-style: italic;
     color: #00d5ff;
 }
 .overlay {
@@ -139,4 +139,14 @@ tbody {
 }
 .button-like-tr:active {
     background-color: #b41c1c; /* Màu nền khi click */
+}
+.priority{
+    font-size: 10px;
+    margin-top: 10px;
+}
+.login{
+    background-color: rgba(0, 255, 255, 0.433);
+    border-radius: 5px;
+    width: 400px;
+    margin-top: 40px;
 }

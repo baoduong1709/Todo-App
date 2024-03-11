@@ -1,111 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-
-<body>
-    <div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="update_task" method="put" action="/task/update">
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="mb-3 col">
-                                <label for="title" class="form-label">Title</label>
-                                <input type="text" name="title" class="form-control" id="titleU">
-                            </div>
-                            <div class="mb-3 col">
-                                <label for="description" class="form-label">Description</label>
-                                <input type="text" name="description" class="form-control" id="descriptionU">
-                            </div>
-                            <div class="mb-3 col">
-                                <label for="due_date" class="form-label">Time</label>
-                                <input type="datetime-local" name="due_date" id="due_dateU" class="form-control">
-                            </div>
-                            <div class="mb-3 col">
-                                <label for="priorityU" class="form-label">Priority</label>
-                                <select id="priorityU" class="form-select" aria-label="Default select example" name="priority1">
-                                    <% priorityTable.forEach(priority => { %>
-                                    <option value="<%= priority.id %>"><%= priority.name %></option>
-                                    <% }); %>
-                                </select>
-                            </div>
+<div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">UPDATE TASK</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="update_task" method="put" action="/task/update">
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="mb-3 col">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" name="title" class="form-control" id="titleU">
+                        </div>
+                        <div class="mb-3 col">
+                            <label for="description" class="form-label">Description</label>
+                            <input type="text" name="description" class="form-control" id="descriptionU">
+                        </div>
+                        <div class="mb-3 col">
+                            <label for="due_date" class="form-label">Time</label>
+                            <input type="datetime-local" name="due_date" id="due_dateU" class="form-control">
+                        </div>
+                        <div class="mb-3 col">
+                            <label for="priorityU" class="form-label">Priority</label>
+                            <select id="priorityU" class="form-select" aria-label="Default select example" name="priority1">
+                                <% priorityTable.forEach(priority => { %>
+                                <option value="<%= priority.id %>"><%= priority.name %></option>
+                                <% }); %>
+                            </select>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer d-flex bd-highlight">
+                    <div class="me-auto bd-highlight"><button id="deleteButton" type="button" class="btn btn-danger" onclick="deleteTask()" style="left: 0;">Delete</button></div>
+                    <div class="bd-highlight"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div>
+                    <div class="bd-highlight"><button type="submit" class="btn btn-primary">Save</button></div>
+                </div>
+            </form>
         </div>
     </div>
-    <script>
-        function updateTask(task) {
-            var newTask = JSON.parse(task);
-            var taskId = newTask.id;
-            const dueDate = new Date(newTask.due_date);
-            const formattedDueDate = dueDate
-                .toISOString()
-                .slice(0, 19)
-                .replace("T", " ");
-            document.getElementById("titleU").value = newTask.title;
-            document.getElementById("descriptionU").value =
-                newTask.description;
-            document.getElementById("priorityU").value = newTask.priority_id;
-            document.getElementById("due_dateU").value = formattedDueDate;
-            const formUpdate = document.getElementById("update_task");
-            formUpdate.addEventListener("submit", async (event) => {
-                event.preventDefault();
-                const formData = new FormData(formUpdate);
-                const title = formData.get("title");
-                const description = formData.get("description");
-                const due_date = formData.get("due_date");
-                const priority1 = formData.get("priority1");
-                try {
-                    const response = await fetch("/task/update/" + taskId, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            title,
-                            description,
-                            due_date,
-                            priority1,
-                        }),
-                    });
-                    if (!response.ok) {
-                        throw new Error("Đã xảy ra lỗi khi tạo task");
-                    }
-                    location.reload();
-                } catch (error) {
-                    console.error("Lỗi:", error);
-                }
-            });
-        }
-        function deleteTask(taskId) {
-            if (confirm("Bạn có chắc chắn muốn xóa task này không?")) {
-                fetch("/task/delete/" + taskId, {
-                        method: "DELETE",
-                    })
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error("Xóa task không thành công");
-                        }
-                        location.reload();
-                    })
-                    .catch((error) => console.error("Lỗi:", error));
-            }
-        }
-    </script>
-</body>
-
-</html>
+</div>
