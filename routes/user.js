@@ -10,6 +10,7 @@ router.get('/create', createUser.view);
 router.post('/create',sendEmail.send,createUser.create);
 router.get('/login', loginUser.view)
 router.post('/login', loginUser.login)
+router.get("/logout", loginUser.logout)
 router.get('/confirmEmail', confirmEmail.view)
 router.post('/confirmEmail', confirmEmail.verify)
 

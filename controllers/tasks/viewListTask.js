@@ -2,6 +2,8 @@ const db = require("../../models/index");
 class ViewListTaskController {
     async view(req, res) {
         try {
+            let name = req.data.name
+            console.log(name);
             let user_id = req.data.id;
             let today = new Date();
             let tasksTodo = await db.Task.findAll({
@@ -25,11 +27,15 @@ class ViewListTaskController {
             let priorityTable = await db.Priority.findAll({
 
             })
+            let allTasks = await db.Task.findAll({
+                where: {
+                    user_id: user_id,
+                },
+            })
             res.render("tasks/viewListTask", {
-                tasksTodo: tasksTodo,
-                tasksInprogress: tasksInprogress,
-                tasksCompleted: tasksCompleted,
                 priorityTable: priorityTable,
+                allTasks: allTasks,
+                name: name
             });
         } catch {
             res.status(503).send(Error);

@@ -6,20 +6,23 @@ class checkLoginEmployee{
         let token = req.session.token
         let key_token = process.env.KEY_TOKEN
         try{
-            if (token == undefined){
-                return res.status(401).send('Chưa đăng nhập')
+            if (token == undefined) {
+                console.log('aaaa');
+                return res.status(401).redirect('/user/login')
+            } else {
+                let tokenVerify = jwt.verify(token,key_token)
+                let email = tokenVerify.email
+                await db.User.findOne({ where: { email:email } })
+                .then((data) =>{
+                    if (data){
+                        req.data = data
+                        next()
+                    }else{
+                        return res.status(404).send('Tài khoản không tồn tại')
+                    }
+                })
             }
-            let tokenVerify = jwt.verify(token,key_token)
-            let email = tokenVerify.email
-            await db.User.findOne({ where: { email:email } })
-            .then((data) =>{
-                if (data){
-                    req.data = data
-                    next()
-                }else{
-                    return res.status(404).send('Tài khoản không tồn tại')
-                }
-            })
+
         }catch(err){
             return res.status(401).send('Token không hợp lệ')
         }
