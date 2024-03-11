@@ -31,7 +31,6 @@ class UpdateTaskController {
             }
             task.status_id = parseInt(status_id) + x
             await task.save()
-            console.log('Task đã được xóa thành công');
             res.status(200).json('ok');
         } catch (error) {
             console.error('Lỗi khi xóa task:', error);

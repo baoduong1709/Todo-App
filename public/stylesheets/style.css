@@ -56,18 +56,16 @@ tbody {
     border: #000000 solid thin;
 }
 .menu {
-    position: fixed;
-    right: 10%;
 }
 .menu button {
     width: 80px;
 }
 .logo {
-    position: fixed;
-    left: 5%;
     font-size: 25px;
     font-weight: bold;
     color: #00d5ff;
+}
+.name{
 }
 .overlay {
     height: 100%;
@@ -123,7 +121,7 @@ tbody {
     border: none; 
     padding: 0;
     cursor: pointer;
-    z-index:  999;
+    z-index:  9;
 }
 .icon-button:hover{
     color: #00d5ff;
@@ -148,5 +146,28 @@ tbody {
     background-color: rgba(0, 255, 255, 0.433);
     border-radius: 5px;
     width: 400px;
+    margin-top: 40px;
+}
+.searchResultsList li{
+    margin: 10px;
+}
+#searchResultsList {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 10%;
+    background-color: white; 
+    width: 25%; 
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 999;
+    border: #ccc solid thin;
+}
+.resultSearch{
+    margin: 20px;
+}
+.create_user{
+    background-color: rgba(0, 255, 255, 0.433);
+    border-radius: 5px;
+    width: 30%;
     margin-top: 40px;
 }

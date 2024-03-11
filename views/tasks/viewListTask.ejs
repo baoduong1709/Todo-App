@@ -13,15 +13,43 @@
 </head>
 
 <body>
-    <div class="navbar" id="navbar">
-        <div class="menu">
+    <% var tasksTodo = [];%>
+    <% var tasksInprogress = [];%>
+    <% var tasksCompleted = []; %>
+    <% allTasks.forEach(function(task) {%>
+    <%     if (task.status_id === 1) {%>
+    <%        tasksTodo.push(task);%>
+    <%     } else if (task.status_id === 2) {%>
+    <%         tasksInprogress.push(task);%>
+    <%     } else if (task.status_id === 3) {%>
+    <%         tasksCompleted.push(task);%>
+    <%     }%>
+    <% });%>
+    <div class="navbar row" id="navbar">
+        <div class="logo col-8">
+            TODOAPP
+        </div>
+        <div class="menu col-2">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search" id="searchInput">
             </div>
+            <div>
+                <div id="searchResultsList">
+
+                </div>
+            </div>
+
         </div>
-        <div class="logo">
-            TODOAPP
+        <div class="btn-group name col-2">
+            <button type="button" class="btn btn-danger"><%= name %></button>
+            <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <button type="button" class="dropdown-item" onclick="logout()">Log out</button>
+            </ul>
         </div>
+
     </div>
     <div class="container-xxl">
         <button type="button" class="btn btn-primary mb-3 mt-3" data-bs-toggle="modal" data-bs-target="#createModal">
@@ -36,11 +64,12 @@
                 <table class="table table-hover table-white table-sm">
                     <tbody>
                         <% tasksTodo.forEach(function(task) { %>
-                        <tr class="border border-5 border-light">
+                        <tr class="border border-5 border-light" id="<%= task.id %>">
                             <td class="col-9 ps-3" onclick="updateTask(<%= JSON.stringify(task) %>)" data-bs-toggle="modal" data-bs-target="#updateModal">
                                 <div class="d-flex align-items-start flex-column bd-highlight" style="height:auto;">
                                     <div class="mb-auto bd-highlight title"><%= task.title %></div>
-                                    <div class="bd-highlight priority">Flex item</div>
+                                    <% var priorityName = priorityTable.find(function(priority) {return priority.id == task.priority_id;}); %>
+                                    <div class="bd-highlight priority"><%= priorityName.name %></div>
                                     <div class="bd-highlight due_date"><%= new Date(task.due_date).toISOString().slice(0,16).replace('T',' ') %></div>
                                 </div>
                             </td>
@@ -64,11 +93,12 @@
                 <table class="table table-hover table-white table-sm">
                     <tbody>
                         <% tasksInprogress.forEach(function(task) { %>
-                        <tr class="border border-5 border-light">
+                        <tr class="border border-5 border-light" id="<%= task.id %>">
                             <td class="col-9 ps-3" onclick="updateTask(<%= JSON.stringify(task) %>)" data-bs-toggle="modal" data-bs-target="#updateModal">
                                 <div class="d-flex align-items-start flex-column bd-highlight">
                                     <div class="mb-auto bd-highlight title"><%= task.title %></div>
-                                    <div class="bd-highlight priority">Flex item</div>
+                                    <% var priorityName = priorityTable.find(function(priority) {return priority.id == task.priority_id;}); %>
+                                    <div class="bd-highlight priority"><%= priorityName.name %></div>
                                     <div class="bd-highlight due_date"><%= new Date(task.due_date).toISOString().slice(0,16).replace('T',' ') %></div>
                                 </div>
                             </td>
@@ -94,11 +124,12 @@
                 <table class="table table-hover table-white table-sm">
                     <tbody>
                         <% tasksCompleted.forEach(function(task) { %>
-                        <tr class="border border-5 border-light">
+                        <tr class="border border-5 border-light" id="<%= task.id %>">
                             <td class="col-9 ps-3" onclick="updateTask(<%= JSON.stringify(task) %>)" data-bs-toggle="modal" data-bs-target="#updateModal">
                                 <div class="d-flex align-items-start flex-column bd-highlight">
                                     <div class="mb-auto bd-highlight title"><%= task.title %></div>
-                                    <div class="bd-highlight priority">Flex item</div>
+                                    <% var priorityName = priorityTable.find(function(priority) {return priority.id == task.priority_id;}); %>
+                                    <div class="bd-highlight priority"><%= priorityName.name %></div>
                                     <div class="bd-highlight due_date"><%= new Date(task.due_date).toISOString().slice(0,16).replace('T',' ') %></div>
                                 </div>
                             </td>
@@ -133,7 +164,7 @@
                     if (!response.ok) {
                         throw new Error("Update task không thành công");
                     }
-                    location.reload();
+                    location.reload()
                 })
                 .catch((error) => console.error("Lỗi:", error));
         }
@@ -212,25 +243,34 @@
                     if (!response.ok) {
                         throw new Error("Xóa task không thành công");
                     }
-                    location.reload();
+                    const closeButton = document.getElementById('closeModal');
+                    if (closeButton) {
+                        closeButton.click();
+                    }
+                    const deletedTaskElement = document.getElementById(taskId);
+                    deletedTaskElement.remove();
+
                 })
                 .catch((error) => console.error("Lỗi:", error));
         }
         document.getElementById('searchInput').addEventListener('input', function() {
             var searchTerm = this.value.trim();
-            if (searchTerm.length >= 2) { // Kiểm tra nếu từ khóa tìm kiếm có ít nhất 2 ký tự
+            if (searchTerm.length >= 2) {
                 searchInDatabase(searchTerm);
             } else {
                 clearSearchResults();
             }
         });
 
+        function clearSearchResults() {
+            var searchResultsList = document.getElementById('searchResultsList');
+            searchResultsList.innerHTML = '';
+        }
+
         function searchInDatabase(keyword) {
-            // Gửi yêu cầu AJAX để tìm kiếm dữ liệu từ máy chủ
-            fetch('/search?term=' + keyword)
+            fetch('view/search?term=' + keyword)
                 .then(response => response.json())
                 .then(data => {
-                    // Hiển thị kết quả tìm kiếm bên dưới ô tìm kiếm
                     displaySearchResults(data);
                 })
                 .catch(error => {
@@ -240,17 +280,36 @@
 
         function displaySearchResults(results) {
             var searchResultsList = document.getElementById('searchResultsList');
-            searchResultsList.innerHTML = ''; // Xóa tất cả các kết quả trước đó
+            searchResultsList.innerHTML = '';
 
-            results.forEach(function(result) {
-                var listItem = document.createElement('li');
-                listItem.textContent = result.title; // Giả sử 'title' là trường cần hiển thị từ kết quả
-                searchResultsList.appendChild(listItem);
-            });
+            if (results.length === 0) {
+                var noResultsItem = document.createElement('div');
+                noResultsItem.textContent = 'Không tìm thấy kết quả.';
+                searchResultsList.appendChild(noResultsItem);
+            } else {
+                console.log(results);
+                results.forEach(function(task) {
+                    var listItem = document.createElement('div');
+                    listItem.textContent = task.title;
+                    listItem.classList.add('resultSearch');
+                    listItem.setAttribute('data-bs-toggle', 'modal');
+                    listItem.setAttribute('data-bs-target', '#updateModal');
+                    listItem.addEventListener('click', function() {
+                        updateTask(task);
+                    });
+                    searchResultsList.appendChild(listItem);
+                });
+
+            }
         }
 
-        function clearSearchResults() {
-            document.getElementById('searchResultsList').innerHTML = '';
+        function logout() {
+            fetch('/user/logout', {
+                    method: "get"
+                })
+                .then(
+                    window.location.href = '/user/login'
+                )
         }
     </script>
 </body>
