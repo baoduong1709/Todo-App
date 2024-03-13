@@ -50,8 +50,8 @@ class confirmEmail {
         let mailOptions = {
             from: "",
             to: email,
-            subject: "Confirm email",
-            text: numberAsString,
+            subject: "Account Confirmation - Verification Code",
+            text: `Hello,\n\nWe have received your request to confirm your account on our system. To complete this process, please use the following verification code:\n\nVerification Code: ${numberAsString}\n\nPlease enter this code on our website or app to confirm your account. Ensure that you do not share this code with anyone else as it is necessary to protect your personal information.\n\nIf you did not request this code, please disregard this email and ensure that your account remains secure.\n\nThank you for using our services.\n\nBest regards,\nBao Duong\nAdmin`,
         };
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {

@@ -7,7 +7,6 @@ class ConfirmEmailController {
         try {
             const code = req.body.code;
             const email = req.body.email;
-            console.log(req.session);
             
             if (req.session.myTable) {
                 for (const record of req.session.myTable) {
@@ -16,11 +15,11 @@ class ConfirmEmailController {
                         if (code === record.code) {
                             const user = await db.User.findOne({ where: { email: email } });
                             if (!user) {
-                                console.log("khong tim thay user");
                                 return
                             }
                             user.is_active = true
                             await user.save()
+                            res.redirect('/user/login')
                         }
                     } else {
                         console.log("Email không tồn tại trong session");

@@ -1,1 +1,12 @@
-<td class="col-9 ps-3" onclick="updateTask('{&#34;id&#34;:134,&#34;user_id&#34;:58,&#34;title&#34;:&#34;Update the task&#39;s title, description, priority, and timeUpdate the task&#39;s title, description, priority, and timeUpdate the task&#39;s title, description, priority, and time&#34;,&#34;description&#34;:&#34;&#34;,&#34;due_date&#34;:&#34;2024-03-08T16:21:00.000Z&#34;,&#34;priority_id&#34;:1,&#34;status_id&#34;:3,&#34;createdAt&#34;:&#34;2024-03-08T09:21:52.000Z&#34;,&#34;updatedAt&#34;:&#34;2024-03-08T09:42:49.000Z&#34;}')" data-bs-toggle="modal" data-bs-target="#updateModal">
+<% var tasksTodo = [];%>
+<% var tasksInprogress = [];%>
+<% var tasksCompleted = []; %>
+<% allTasks.forEach(function(task) {%>
+<%     if (task.status_id === 1) {%>
+<%        tasksTodo.push(task);%>
+<%     } else if (task.status_id === 2) {%>
+<%         tasksInprogress.push(task);%>
+<%     } else if (task.status_id === 3) {%>
+<%         tasksCompleted.push(task);%>
+<%     }%>
+<% });%>

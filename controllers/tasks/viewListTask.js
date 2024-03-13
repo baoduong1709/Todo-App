@@ -2,40 +2,48 @@ const db = require("../../models/index");
 class ViewListTaskController {
     async view(req, res) {
         try {
-            let name = req.data.name
-            console.log(name);
+            let number = 0
+            let page = req.query.page
+            if (page > 0) {
+                number = page -1;
+            } else {
+                number = 0
+            }
+            let name = req.data.name;
             let user_id = req.data.id;
-            let today = new Date();
-            let tasksTodo = await db.Task.findAll({
-                where: {
-                    user_id: user_id,
-                    status_id:1
-                },
-            });
-            let tasksInprogress = await db.Task.findAll({
-                where: {
-                    user_id: user_id,
-                    status_id:2
-                },
-            });
-            let tasksCompleted = await db.Task.findAll({
-                where: {
-                    user_id: user_id,
-                    status_id:3
-                },
-            })
-            let priorityTable = await db.Priority.findAll({
 
-            })
-            let allTasks = await db.Task.findAll({
+            console.log(number);
+            const tasksTodo = await db.Task.findAll({
                 where: {
                     user_id: user_id,
+                    status_id: 1,
                 },
-            })
+                offset:parseInt(number)*6,
+                limit: 6,
+            });
+            const tasksInprogress = await db.Task.findAll({
+                where: {
+                    user_id: user_id,
+                    status_id: 2,
+                },
+                offset:parseInt(number)*6,
+                limit: 6,
+            });
+            const tasksCompleted = await db.Task.findAll({
+                where: {
+                    user_id: user_id,
+                    status_id: 3,
+                },
+                offset:parseInt(number)*6,
+                limit: 6,
+            });
+            let priorityTable = await db.Priority.findAll({});
             res.render("tasks/viewListTask", {
+                tasksTodo: tasksTodo,
+                tasksInprogress: tasksInprogress,
+                tasksCompleted: tasksCompleted,
                 priorityTable: priorityTable,
-                allTasks: allTasks,
-                name: name
+                name: name,
             });
         } catch {
             res.status(503).send(Error);
