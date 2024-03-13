@@ -13,18 +13,7 @@
 </head>
 
 <body>
-    <% var tasksTodo = [];%>
-    <% var tasksInprogress = [];%>
-    <% var tasksCompleted = []; %>
-    <% allTasks.forEach(function(task) {%>
-    <%     if (task.status_id === 1) {%>
-    <%        tasksTodo.push(task);%>
-    <%     } else if (task.status_id === 2) {%>
-    <%         tasksInprogress.push(task);%>
-    <%     } else if (task.status_id === 3) {%>
-    <%         tasksCompleted.push(task);%>
-    <%     }%>
-    <% });%>
+
     <div class="navbar row" id="navbar">
         <div class="logo col-8">
             TODOAPP
@@ -57,12 +46,12 @@
         </button>
         <%- include('../tasks/createTask.ejs'); %>
         <div class="row">
-            <div class="col bg-light mx-2" style="height: 500px;">
+            <div class="col bg-light mx-2">
                 <div class="title-time mt-2">
                     <p>Todo</p>
                 </div>
                 <table class="table table-hover table-white table-sm">
-                    <tbody>
+                    <tbody id="page">
                         <% tasksTodo.forEach(function(task) { %>
                         <tr class="border border-5 border-light" id="<%= task.id %>">
                             <td class="col-9 ps-3" onclick="updateTask(<%= JSON.stringify(task) %>)" data-bs-toggle="modal" data-bs-target="#updateModal">
@@ -85,6 +74,7 @@
                         <% }); %>
                     </tbody>
                 </table>
+
             </div>
             <div class="col bg-light mx-2">
                 <div class="title-time mt-2">
@@ -146,8 +136,27 @@
                 </table>
             </div>
         </div>
+        <div class="d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination mt-3">
+
+                    <li class="page-item"><a class="page-link" onclick="nextPage(1)">1</a></li>
+                    <li class="page-item"><a class="page-link" onclick="nextPage(2)">2</a></li>
+                    <li class="page-item"><a class="page-link" onclick="nextPage(3)">3</a></li>
+                    <li class="page-item"><a class="page-link" onclick="nextPage(4)">4</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div id="taskRows"></div>
     </div>
     <script>
+        function nextPage(page){
+            var urlParams = new URLSearchParams(window.location.search);
+            console.log(urlParams);
+            urlParams.set('page', page);
+            var newUrl = window.location.pathname + '?' + urlParams.toString();
+            window.location.href = newUrl;
+        }
         function updateStatusTask(task_id, status_id, x) {
             fetch("/task/update/status/" + task_id, {
                     method: "post",
@@ -236,6 +245,10 @@
         function confirmDelete() {
             const deleteButton = document.getElementById("deleteButton");
             const taskId = deleteButton.dataset.taskId;
+            const closeButton = document.getElementById('closeModal');
+            if (closeButton) {
+                closeButton.click();
+            }
             fetch("/task/delete/" + taskId, {
                     method: "DELETE",
                 })
@@ -247,8 +260,7 @@
                     if (closeButton) {
                         closeButton.click();
                     }
-                    const deletedTaskElement = document.getElementById(taskId);
-                    deletedTaskElement.remove();
+                    location.reload()
 
                 })
                 .catch((error) => console.error("Lỗi:", error));

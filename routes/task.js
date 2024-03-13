@@ -12,5 +12,5 @@ router.get('/view', checkLogin.check, viewListTask.view)
 router.post('/update/status/:id', checkLogin.check, updateTask.updateTaskStatus);
 router.put('/update/:id', checkLogin.check, updateTask.update);
 router.delete('/delete/:id', checkLogin.check, deleteTask.delete);
-router.get('/view/search',searchTask.search)
+router.get('/view/search', checkLogin.check, searchTask.search)
 module.exports = router;

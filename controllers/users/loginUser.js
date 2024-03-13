@@ -32,14 +32,8 @@ class LoginUserController {
         res.render("users/login", { title: "Express" });
     }
     async logout(req, res) {
-        await req.session.destroy((err) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('asddas');
-                return res.status(200)
-            }
-        });
+        await delete req.session.token
+        console.log(req.session);
     }
 }
 module.exports = new LoginUserController();
