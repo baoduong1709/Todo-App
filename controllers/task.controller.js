@@ -1,5 +1,4 @@
-const db = require('../../models/index')
-class CreateTaskController {
+class TaskController{
     async create(req, res) {
         const { title, description, due_date, priority_id } = req.body;
         let user_id = req.data.id
@@ -12,10 +11,10 @@ class CreateTaskController {
                 priority_id,
                 status_id: 1
             });
-            res.status(200).json('ok');
+            res.status(200).json('Create a successful mission');
         } catch (error){
-            console.log(error);
+            
         }
     }
 }
-module.exports = new CreateTaskController;
+module.exports = new TaskController;

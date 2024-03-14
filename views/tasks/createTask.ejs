@@ -55,7 +55,7 @@
             const title = formData.get("title");
             const description = formData.get("description");
             const due_date = formData.get("due_date");
-            const priority1 = formData.get("priority1");
+            const priority_id = formData.get("priority1");
             try {
                 const response = await fetch("/task/create", {
                     method: "POST",
@@ -66,7 +66,7 @@
                         title,
                         description,
                         due_date,
-                        priority1,
+                        priority_id,
                     }),
                 });
                 if (!response.ok) {

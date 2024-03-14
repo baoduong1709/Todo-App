@@ -1,7 +1,9 @@
 const db = require("../../models/index");
+const { Op } = require('sequelize');
 class ViewListTaskController {
     async view(req, res) {
         try {
+            let filter = req.query.filter
             let number = 0
             let page = req.query.page
             if (page > 0) {
@@ -11,16 +13,27 @@ class ViewListTaskController {
             }
             let name = req.data.name;
             let user_id = req.data.id;
-
-            console.log(number);
-            const tasksTodo = await db.Task.findAll({
-                where: {
-                    user_id: user_id,
-                    status_id: 1,
-                },
-                offset:parseInt(number)*6,
-                limit: 6,
-            });
+            let tasksTodo = []
+            if (filter == 'ASC' || filter == 'DESC') {
+                tasksTodo = await db.Task.findAll({
+                    where: {
+                        user_id: user_id,
+                        status_id: 1,
+                    },
+                    offset:parseInt(number)*6,
+                    limit: 6,
+                    order: [['title', filter]],
+                });
+            } else {
+                tasksTodo = await db.Task.findAll({
+                    where: {
+                        user_id: user_id,
+                        status_id: 1,
+                    },
+                    offset:parseInt(number)*6,
+                    limit: 6,
+                });
+            }
             const tasksInprogress = await db.Task.findAll({
                 where: {
                     user_id: user_id,
@@ -28,6 +41,7 @@ class ViewListTaskController {
                 },
                 offset:parseInt(number)*6,
                 limit: 6,
+                order: [['title', 'DESC']]
             });
             const tasksCompleted = await db.Task.findAll({
                 where: {

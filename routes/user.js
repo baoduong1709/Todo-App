@@ -1,17 +1,17 @@
-var express = require('express');
-var router = express.Router();
-var loginUser = require('../controllers/users/loginUser');
-var createUser = require('../controllers/users/createUser')
-var sendEmail = require('../middlewares/sendEmail')
-var confirmEmail = require('../controllers/users/confirmEmail')
+const express = require('express');
+const router = express.Router();
+const createUser = require('../controllers/users/createUser')
+const sendEmail = require('../middlewares/email')
+const confirmEmail = require('../controllers/users/confirmEmail')
+const userController = require('../controllers/user.controller')
+const authMiddleware = require('../middlewares/auth')
 
-
-router.get('/create', createUser.view);
+router.get('/create',authMiddleware.checkLogin, createUser.view);
 router.post('/create',sendEmail.send,createUser.create);
-router.get('/login', loginUser.view)
-router.post('/login', loginUser.login)
-router.get("/logout", loginUser.logout)
-router.get('/confirmEmail', confirmEmail.view)
+router.get('/login',authMiddleware.checkLogin, userController.view)
+router.post('/login', userController.login)
+router.get("/logout", userController.logout)
+router.get('/confirmEmail',authMiddleware.checkLogin, confirmEmail.view)
 router.post('/confirmEmail', confirmEmail.verify)
 
 module.exports = router;

@@ -23,12 +23,11 @@ let redisStore = new RedisStore({
 app.use(
   session({
     store: redisStore,
-    resave: false, // required: force lightweight session keep alive (touch)
-    saveUninitialized: false, // recommended: only save session when data exists
+    resave: false,
+    saveUninitialized: false,
     secret: "keyboard cat",
   }),
 )
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

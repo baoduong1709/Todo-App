@@ -2,7 +2,18 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
-        static associate(models) {}
+        /**
+         * Helper method for defining associations.
+         * This method is not a part of Sequelize lifecycle.
+         * The `models/index` file will call this method automatically.
+         */
+        static associate(models) {
+            User.hasMany(models.Task, {
+                foreignKey: "user_id",
+                onDelete: "CASCADE",
+                onUpdate: "CASCADE",
+            });
+        }
     }
     User.init(
         {
@@ -10,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
             password: DataTypes.STRING,
             email: DataTypes.STRING,
             dateOfBirth: DataTypes.DATE,
-            gender: DataTypes.ENUM("Male", "Female", "Other"),
+            gender: DataTypes.ENUM(["male", "female", "other"]),
             address: DataTypes.STRING,
             is_active: DataTypes.BOOLEAN,
         },

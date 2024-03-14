@@ -2,34 +2,20 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
     class Task extends Model {
-        static associate(models) {}
+        static associate(models) {
+            Task.belongsTo(models.User, {
+                foreignKey: "user_id"
+            });
+        }
     }
     Task.init(
         {
-            user_id: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-            },
-            title: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            description: {
-                type: DataTypes.STRING,
-                allowNull: true,
-            },
-            due_date: {
-                type: DataTypes.DATE,
-                allowNull: false,
-            },
-            priority_id: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-            },
-            status_id: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-            },
+            user_id: DataTypes.INTEGER,
+            title: DataTypes.STRING,
+            description: DataTypes.STRING,
+            due_date: DataTypes.DATE,
+            priority_id: DataTypes.INTEGER,
+            status_id: DataTypes.INTEGER,
         },
         {
             sequelize,
@@ -38,4 +24,3 @@ module.exports = (sequelize, DataTypes) => {
     );
     return Task;
 };
-

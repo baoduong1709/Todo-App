@@ -55,8 +55,6 @@ tbody {
     padding: 10px 20px;
     border: #000000 solid thin;
 }
-.menu {
-}
 .menu button {
     width: 80px;
 }
@@ -64,8 +62,6 @@ tbody {
     font-size: 25px;
     font-weight: bold;
     color: #00d5ff;
-}
-.name{
 }
 .overlay {
     height: 100%;
@@ -146,7 +142,7 @@ tbody {
     background-color: rgba(0, 255, 255, 0.433);
     border-radius: 5px;
     width: 400px;
-    margin-top: 40px;
+    margin-top: -80px;
 }
 .searchResultsList li{
     margin: 10px;
