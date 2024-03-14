@@ -4,7 +4,7 @@ require("dotenv").config();
 class checkLoginEmployee {
     async verifyToken(req, res, next) {
         let token = req.cookies.token;
-        let key_token = process.env.KEY_TOKEN;
+        const key_token = process.env.KEY_TOKEN;
         try {
             if (!token) {
                 return res.status(401).redirect("/user/login");
@@ -33,7 +33,7 @@ class checkLoginEmployee {
         if (!token) {
             next();
         } else {
-            let key_token = process.env.KEY_TOKEN;
+            const key_token = process.env.KEY_TOKEN;
             try {
                 let tokenVerify = jwt.verify(token, key_token);
                 let email = tokenVerify.email;
