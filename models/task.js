@@ -6,6 +6,12 @@ module.exports = (sequelize, DataTypes) => {
             Task.belongsTo(models.User, {
                 foreignKey: "user_id"
             });
+            Task.belongsTo(models.Status, {
+              foreignKey: "status_id"
+            });
+            Task.belongsTo(models.Priority, {
+              foreignKey: "priority_id"
+          });
         }
     }
     Task.init(

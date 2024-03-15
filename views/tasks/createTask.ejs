@@ -69,8 +69,24 @@
                         priority_id,
                     }),
                 });
-                if (!response.ok) {
-                    throw new Error("Đã xảy ra lỗi khi tạo task");
+                if (response.status == 400) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    const responseData = await response.json(); 
+                    Toast.fire({
+                        icon: "warning",
+                        title: responseData.msg 
+                    });
+                    return
                 }
                 location.reload();
             } catch (error) {

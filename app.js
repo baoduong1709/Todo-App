@@ -8,6 +8,7 @@ var indexRouter = require("./routes/index");
 var bodyParser = require("body-parser");
 var usersRouter = require("./routes/user");
 var tasksRouter = require("./routes/task")
+require('dotenv').config();
 
 var app = express();
 process.env.TZ = "UTC";
@@ -25,7 +26,7 @@ app.use(
     store: redisStore,
     resave: false,
     saveUninitialized: false,
-    secret: "keyboard cat",
+    secret: process.env.SESSION_SECRET,
   }),
 )
 app.use(bodyParser.json());
