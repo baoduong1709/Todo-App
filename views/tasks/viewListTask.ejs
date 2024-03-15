@@ -58,6 +58,7 @@
             </div>
         </div>
         <%- include('../tasks/createTask.ejs'); %>
+        <%- include('../tasks/updateTask.ejs') %>
         <div class="row" style="height: 480px;">
             <div class="col bg-light mx-2">
                 <div class="title-time mt-2">
@@ -75,7 +76,7 @@
                                     <div class="bd-highlight due_date"><%= new Date(task.due_date).toISOString().slice(0,16).replace('T',' ') %></div>
                                 </div>
                             </td>
-                            <%- include('../tasks/updateTask.ejs') %>
+                            
                             <td>
                                 <div class="d-flex justify-content-end">
                                     <button onclick="updateStatusTask('<%= task.id %>','<%= task.status_id %>',1)" class="icon-button me-2">
@@ -207,9 +208,7 @@
         }
 
         function updateTask(task) {
-            console.log(task);
             var newTask = JSON.parse(task);
-            console.log(newTask);
             var taskId = newTask.id;
             const deleteButton = document.getElementById("deleteButton");
             deleteButton.dataset.taskId = taskId;
