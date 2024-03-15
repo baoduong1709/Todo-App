@@ -336,7 +336,7 @@
                     listItem.setAttribute('data-bs-toggle', 'modal');
                     listItem.setAttribute('data-bs-target', '#updateModal');
                     listItem.addEventListener('click', function() {
-                        updateTask(task);
+                        updateTask(JSON.stringify(task));
                     });
                     searchResultsList.appendChild(listItem);
                 });

@@ -10,8 +10,6 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             User.hasMany(models.Task, {
                 foreignKey: "user_id",
-                onDelete: "CASCADE",
-                onUpdate: "CASCADE",
             });
         }
     }

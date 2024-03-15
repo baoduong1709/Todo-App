@@ -25,7 +25,7 @@ class checkLoginEmployee {
                 );
             }
         } catch (err) {
-            return res.status(401).send("Token không hợp lệ");
+            return res.status(401).redirect("/user/login");
         }
     }
     async checkLogin(req, res, next) {
@@ -45,7 +45,7 @@ class checkLoginEmployee {
                         next()
                     });
             } catch (err) {
-                return res.status(401).send("Token không hợp lệ");
+                next()
             }
         }
     }

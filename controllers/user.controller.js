@@ -1,11 +1,12 @@
 const db = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const salt = bcrypt.genSaltSync(10);
 
 class UserController {
     async create(req, res) {
-        console.log(req.body);
         try {
+            console.log('1');
             let email = req.body.email;
             if ((email === "") | (email === null) | (email === undefined)) {
                 return res.status(422).json("Email is required");
@@ -30,7 +31,8 @@ class UserController {
             return res.status(400).send("Error");
         }
     }
-    view(req, res) {
+    viewCreateUser(req, res) {
+        console.log('asdasda');
         res.render("users/createUser");
     }
     async login(req, res) {
@@ -64,7 +66,7 @@ class UserController {
             console.log(error);
         }
     }
-    view(req, res) {
+    viewLoginUser(req, res) {
         res.render("users/login", { title: "Express" });
     }
     logout(req, res) {

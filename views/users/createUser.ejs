@@ -113,7 +113,6 @@
                     return
                 }
                 const responseData = await response.json();
-                console.log(responseData);
                 window.location.href = `/user/confirmEmail?email=${responseData}`;
             } catch (error) {
                 console.error('Lỗi:', error);
