@@ -13,11 +13,14 @@
         .is-invalid {
             border-color: #dc3545 !important;
         }
+        body{
+            background-image: linear-gradient(to right,#112D60 , #DD83E0);
+        }
     </style>
 </head>
 
 <body>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center" >
         <form method="post" action="/user/create" id="create_user" onsubmit="return validatePassword()" class="create_user">
             <div class="container p-3">
                 <div class="mb-3 col-12">
@@ -115,7 +118,7 @@
                 const responseData = await response.json();
                 window.location.href = `/user/confirmEmail?email=${responseData}`;
             } catch (error) {
-                console.error('Lỗi:', error);
+                console.error(error);
             }
         });
 

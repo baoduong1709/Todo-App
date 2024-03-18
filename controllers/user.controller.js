@@ -28,11 +28,10 @@ class UserController {
             return res.status(200).json(email);
         } catch (error) {
             console.log(error);
-            return res.status(400).send("Error");
+            return res.status(400).json({msg:"Error creating user"});
         }
     }
     viewCreateUser(req, res) {
-        console.log('asdasda');
         res.render("users/createUser");
     }
     async login(req, res) {
@@ -70,7 +69,6 @@ class UserController {
         res.render("users/login", { title: "Express" });
     }
     logout(req, res) {
-        console.log("asdasd");
         return res.clearCookie("token").status(200).json({ msg: "Logout  Successfully" });
     }
 }

@@ -9,6 +9,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <style>
+        body{
+            background-image: linear-gradient(to right,#112D60 , #DD83E0);
+        }
+    </style>
 </head>
 
 <body>
@@ -25,8 +30,8 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
             </div>
-            <div>
-                <a href="http://localhost:3000/user/create">Register</a>
+            <div class="d-flex justify-content-end pb-2 pe-3">
+                <a href="http://localhost:3000/user/create" style="color: black;">Register</a>
             </div>
         </form>
     </div>
@@ -71,7 +76,7 @@
                     window.location.href = '/task/view';
                 }
             } catch (error) {
-                console.error('Lỗi:', error);
+                console.error(error);
             }
         });
     </script>

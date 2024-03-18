@@ -140,7 +140,7 @@ class TaskController{
                 name: name,
             });
         } catch {
-            res.status(503).send(Error);
+            res.status(503).json({msg:"Error"});
         }
     }
 

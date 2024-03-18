@@ -28,10 +28,6 @@ a {
     margin-top: 5px;
     font-size: 10px;
 }
-
-tbody {
-    background-color: rgb(20, 91, 91);
-}
 .completed {
     color: green;
 }
@@ -129,18 +125,18 @@ tbody {
     cursor: pointer;
 }
 .button-like-tr:hover {
-    background-color: #003979; /* Màu nền khi di chuột vào */
+    background-color: #003979;
 }
 .button-like-tr:active {
-    background-color: #b41c1c; /* Màu nền khi click */
+    background-color: #b41c1c; 
 }
 .priority{
     font-size: 10px;
     margin-top: 10px;
 }
 .login{
-    background-color: rgba(0, 255, 255, 0.433);
-    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.203);
+    border-radius: 10px;
     width: 400px;
     margin-top: -80px;
 }
@@ -150,20 +146,42 @@ tbody {
 #searchResultsList {
     position: absolute;
     top: calc(100% + 5px);
-    right: 10%;
+    right: 15%;
     background-color: white; 
-    width: 25%; 
+    width: 20%; 
     max-height: 400px;
     overflow-y: auto;
     z-index: 999;
-    border: #ccc solid thin;
+    border-radius: 5px;
 }
 .resultSearch{
-    margin: 20px;
+    margin: 5px;
+    border: #000000 solid thin;
+    padding: 10px;
 }
 .create_user{
-    background-color: rgba(0, 255, 255, 0.433);
+    background-color: rgba(255, 255, 255, 0.203);
     border-radius: 5px;
     width: 30%;
     margin-top: 40px;
+}
+.box{
+    background-color: rgba(255, 255, 255, 0.203);
+    border-radius: 5px;
+}
+.task{
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    background-color: #ffffff;
+}
+.task:hover{
+    color: #cb3e3e;
+    background-color: #000;
+    z-index: 55;
+}
+.button-filter{
+    font-size: 10px;
+    width: 40px;
+    height: 25px;
+    border-radius: 5px;
 }

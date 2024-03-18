@@ -35,8 +35,6 @@ class EmailConfirmation {
         try {
             const code = req.body.code;
             const email = (req.body.email).replace(/\s/g, '+');
-            console.log(req.session);
-
             if (req.session.myTable) {
                 for (const record of req.session.myTable) {
                     if (record.email === email) {
@@ -52,14 +50,15 @@ class EmailConfirmation {
                             res.status(400).json({msg:"Wrong confirmation code"})
                         }
                     } else {
-                        console.log("Email không tồn tại trong session");
+                        res.status(500).json({msg:"Email not found in session."});
                     }
                 }
             } else {
-                console.log("Bảng không tồn tại trong session");
+                res.status(500).json({ msg: "Session data is empty!" })
             }
         } catch (error) {
             console.error(error);
+            return
         }
     }
 }
