@@ -175,8 +175,8 @@ a {
     background-color: #ffffff;
 }
 .task:hover{
-    color: #cb3e3e;
-    background-color: #000;
+    color: #ffffff;
+    background-image: linear-gradient(to right,#112D60 , #DD83E0);
     z-index: 55;
 }
 .button-filter{
