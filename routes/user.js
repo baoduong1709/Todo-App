@@ -5,8 +5,8 @@ const authMiddleware = require('../middlewares/auth')
 const validate = require('../middlewares/validate')
 const mailController = require('../controllers/mail.controller');
 
-router.get('/create',authMiddleware.checkLogin, userController.viewCreateUser);
-router.post('/create',validate.validateUserData,mailController.send,userController.create);
+router.get('/register',authMiddleware.checkLogin, userController.viewCreateUser);
+router.post('/',validate.validateUserData,mailController.send,userController.create);
 router.get('/login',authMiddleware.checkLogin, userController.viewLoginUser)
 router.post('/login', userController.login)
 router.get("/logout", userController.logout)

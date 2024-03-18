@@ -57,7 +57,7 @@
             const due_date = formData.get("due_date");
             const priority_id = formData.get("priority1");
             try {
-                const response = await fetch("/task/create", {
+                const response = await fetch("/tasks", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

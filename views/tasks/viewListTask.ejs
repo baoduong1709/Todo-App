@@ -19,7 +19,7 @@
 
 <body>
     <div class="navbar row" id="navbar">
-        <div class="logo col-8" onclick="location.href='/task/view'">
+        <div class="logo col-8" onclick="location.href='/tasks'">
             TODOAPP
         </div>
         <div class="menu col-2">
@@ -172,7 +172,7 @@
         }
 
         function updateStatusTask(task_id, status_id, x) {
-            fetch("/task/update/status/" + task_id, {
+            fetch("/task/status/" + task_id, {
                     method: "post",
                     headers: {
                         "Content-Type": "application/json",
@@ -220,7 +220,7 @@
                 const due_date = formData.get("due_date");
                 const priority1 = formData.get("priority1");
                 try {
-                    const response = await fetch("/task/update/" + taskId, {
+                    const response = await fetch("/tasks/" + taskId, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
@@ -266,7 +266,7 @@
             if (closeButton) {
                 closeButton.click();
             }
-            fetch("/task/delete/" + taskId, {
+            fetch("/tasks/" + taskId, {
                     method: "DELETE",
                 })
                 .then((response) => {
@@ -297,7 +297,7 @@
         }
 
         function searchInDatabase(keyword) {
-            fetch('view/search?term=' + keyword)
+            fetch('tasks/search?term=' + keyword)
                 .then(response => response.json())
                 .then(data => {
                     displaySearchResults(data);
@@ -332,11 +332,11 @@
         }
 
         function logout() {
-            fetch('/user/logout', {
+            fetch('/users/logout', {
                     method: "get"
                 })
                 .then(
-                    window.location.href = '/user/login'
+                    window.location.href = '/users/login'
                 )
         }
     </script>

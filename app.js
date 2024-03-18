@@ -38,8 +38,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 connectToDB();
 app.use("/", indexRouter);
-app.use("/user", usersRouter);
-app.use("/task", tasksRouter);
+app.use("/users", usersRouter);
+app.use("/tasks", tasksRouter);
 app.use(logger('dev'));
 app.use(function (req, res, next) {
     next(createError(404));

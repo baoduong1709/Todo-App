@@ -21,7 +21,7 @@
 
 <body>
     <div class="d-flex justify-content-center" >
-        <form method="post" action="/user/create" id="create_user" onsubmit="return validatePassword()" class="create_user">
+        <form method="post" action="/users" id="create_user" onsubmit="return validatePassword()" class="create_user">
             <div class="container p-3">
                 <div class="mb-3 col-12">
                     <label for="email" class="form-label">Email address</label>
@@ -82,7 +82,7 @@
             const gender = formData.get("gender")
             const address = formData.get("address");
             try {
-                const response = await fetch('/user/create', {
+                const response = await fetch('/users', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -115,8 +115,28 @@
                     });
                     return
                 }
-                const responseData = await response.json();
-                window.location.href = `/user/confirmEmail?email=${responseData}`;
+                if (response.status === 500){
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    Toast.fire({
+                        icon: "warning",
+                        title: "Error"
+                    });
+                    return
+                }
+                if (response.status === 200){
+                    const responseData = await response.json();
+                    window.location.href = `/users/confirmEmail?email=${responseData}`;
+                }
             } catch (error) {
                 console.error(error);
             }

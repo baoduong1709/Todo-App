@@ -25,7 +25,7 @@
             const email = urlParams.get("email");
             var inputData = document.getElementById("inputData").value;
             try {
-                const response = await fetch("/user/confirmEmail", {
+                const response = await fetch("/users/confirmEmail", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -55,8 +55,29 @@
                     });
                     return;
                 }
+                if (response.status === 500) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    const responseData = await response.json();
+                    Toast.fire({
+                        icon: "warning",
+                        title: responseData.msg
+                    });
+                    return;
+                }
 
-                window.location.href = "/user/login";
+                if(response.status === 200){
+                    window.location.href = "/users/login";
+                }
             } catch (error) {
                 console.error( error);
             }
